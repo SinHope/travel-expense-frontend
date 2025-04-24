@@ -1,13 +1,6 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-function Navbar() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-  }, [darkMode]);
-
+function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
       <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">🌍 Travel Tracker</h1>
