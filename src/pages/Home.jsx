@@ -58,7 +58,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-500 ease-in-out py-10 px-4">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-6">🗺️ Your Trips</h2>
 
@@ -69,7 +69,7 @@ function Home() {
             {trips.map((trip) => (
               <li
                 key={trip._id}
-                className="bg-white border rounded-lg shadow p-5"
+                className="bg-white dark:bg-gray-800 transition-colors duration-500 border rounded-lg shadow p-5"
               >
                 {editingTripId === trip._id ? (
                   <div className="space-y-3">
@@ -97,13 +97,13 @@ function Home() {
                     <div className="flex gap-2">
                       <button
                         onClick={submitEdit}
-                        className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
+                        className="bg-green-600 dark:bg-green-300 dark:text-white px-4 py-1 rounded hover:bg-green-700"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setEditingTripId(null)}
-                        className="bg-gray-300 text-black px-4 py-1 rounded hover:bg-gray-400"
+                        className="bg-gray-300 dark:bg-gray-100 dark:text-black px-4 py-1 rounded hover:bg-gray-400"
                       >
                         Cancel
                       </button>
@@ -111,19 +111,19 @@ function Home() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-xl font-semibold text-blue-700">{trip.destination}</h3>
-                    <p className="text-sm text-gray-600">📅 {trip.date}</p>
+                    <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400">{trip.destination}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">📅 {trip.date}</p>
                     <p className="text-sm text-green-600 font-medium">💰 ${trip.budget}</p>
                     <div className="flex gap-3 mt-3">
                       <button
                         onClick={() => startEdit(trip)}
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-600 dark:text-blue-300 hover:underline"
                       >
                         ✏️ Edit
                       </button>
                       <button
                         onClick={() => handleDelete(trip._id)}
-                        className="text-red-600 hover:underline"
+                        className="text-red-600 dark:text-red-300 hover:underline"
                       >
                         🗑️ Delete
                       </button>

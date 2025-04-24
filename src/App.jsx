@@ -14,7 +14,7 @@ function App() {
 
   return (
     <Router>
-      <div className={`min-h-screen transition ${darkMode ? "dark bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
+      <div className={`min-h-screen transition-colors duration-500 ${darkMode ? "dark bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         <div className="p-4">
           <Routes>

@@ -34,8 +34,8 @@ function AddTrip() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-500 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-800 transition-colors duration-500 shadow-md rounded-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">✈️ Add a New Trip</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
