@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 function Home() {
   const [trips, setTrips] = useState([]);
 
@@ -8,7 +10,7 @@ function Home() {
     // Run this once when page loads
     const fetchTrips = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/trips");
+        const response = await axios.get("${BASE_URL}/api/trips");
         setTrips(response.data); // store trips in state
       } catch (error) {
         console.error("Error fetching trips:", error);
@@ -20,7 +22,7 @@ function Home() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/trips/${id}`);
+      await axios.delete(`${BASE_URL}/api/trips/${id}`);
       setTrips(trips.filter((trip) => trip.id !== id));
     } catch (err) {
       console.error("Delete error:", err);
@@ -50,7 +52,7 @@ const handleEditChange = (e) => {
 
 const submitEdit = async () => {
   try {
-    const res = await axios.put(`http://localhost:5000/api/trips/${editingTripId}`, editFormData);
+    const res = await axios.put(`${BASE_URL}/api/trips/${editingTripId}`, editFormData);
     setTrips(trips.map(t => t._id === editingTripId ? res.data : t));
     setEditingTripId(null);
   } catch (err) {
@@ -66,7 +68,7 @@ const submitEdit = async () => {
       {trips.length === 0 ? (
         <p className="text-gray-500">No trips added yet.</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-4">
           {trips.map((trip) => (
             <li
               key={trip.id}
