@@ -10,27 +10,23 @@ function AddTrip() {
     budget: ""
   });
 
-  // Updates form input values
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handles form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // stops page reload
+    e.preventDefault();
 
     const { destination, date, budget } = formData;
-
-  // Basic validation
-  if (!destination || !date || !budget) {
-    alert("You cannot leave the fields empty");
-    return;
-  }
+    if (!destination || !date || !budget) {
+      alert("You cannot leave the fields empty");
+      return;
+    }
 
     try {
-      await axios.post(`${BASE_URL}/api/trips`, formData); // POST to backend
+      await axios.post(`${BASE_URL}/api/trips`, formData);
       alert("Trip added!");
-      setFormData({ destination: "", date: "", budget: "" }); // clear form
+      setFormData({ destination: "", date: "", budget: "" });
     } catch (error) {
       console.error("Error adding trip", error);
       alert("Something went wrong.");
@@ -38,35 +34,41 @@ function AddTrip() {
   };
 
   return (
-    <div>
-      <h2>Add a New Trip</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          className="border rounded p-2 w-full mb-3"
-          type="text"
-          name="destination"
-          placeholder="Destination"
-          value={formData.destination}
-          onChange={handleChange}
-        />
-        <br />
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-        />
-        <br />
-        <input
-          type="number"
-          name="budget"
-          placeholder="Budget ($)"
-          value={formData.budget}
-          onChange={handleChange}
-        />
-        <br />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Trip</button>
-      </form>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">✈️ Add a New Trip</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="destination"
+            placeholder="Destination"
+            value={formData.destination}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="number"
+            name="budget"
+            placeholder="Budget ($)"
+            value={formData.budget}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          >
+            ➕ Add Trip
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

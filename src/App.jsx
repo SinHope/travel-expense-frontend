@@ -6,11 +6,15 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add-trip" element={<AddTrip />} />
-      </Routes>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition">
+        <Navbar />
+        <div className="p-4">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/add-trip" element={<AddTrip />} />
+          </Routes>
+        </div>
+      </div>
     </Router>
   );
 }
