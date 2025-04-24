@@ -28,7 +28,7 @@ function AddTrip() {
   }
 
     try {
-      await axios.post("${BASE_URL}/api/trips", formData); // POST to backend
+      await axios.post(`${BASE_URL}/api/trips`, formData); // POST to backend
       alert("Trip added!");
       setFormData({ destination: "", date: "", budget: "" }); // clear form
     } catch (error) {
