@@ -78,21 +78,21 @@ function Home() {
                       name="destination"
                       value={editFormData.destination}
                       onChange={handleEditChange}
-                      className="w-full border p-2 rounded"
+                      className="w-full border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white"
                     />
                     <input
                       type="date"
                       name="date"
                       value={editFormData.date}
                       onChange={handleEditChange}
-                      className="w-full border p-2 rounded"
+                      className="w-full border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white"
                     />
                     <input
                       type="number"
                       name="budget"
                       value={editFormData.budget}
                       onChange={handleEditChange}
-                      className="w-full border p-2 rounded"
+                      className="w-full border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white "
                     />
                     <div className="flex gap-2">
                       <button
@@ -117,13 +117,13 @@ function Home() {
                     <div className="flex gap-3 mt-3">
                       <button
                         onClick={() => startEdit(trip)}
-                        className="text-blue-600 dark:text-blue-300 hover:underline"
+                        className="text-blue-600 dark:text-blue-300 hover:underline bg-white dark:bg-gray-700 text-black dark:text-white"
                       >
                         ✏️ Edit
                       </button>
                       <button
                         onClick={() => handleDelete(trip._id)}
-                        className="text-red-600 dark:text-red-300 hover:underline"
+                        className="text-red-600 dark:text-red-300 hover:underline bg-white dark:bg-gray-700 text-black dark:text-white"
                       >
                         🗑️ Delete
                       </button>
