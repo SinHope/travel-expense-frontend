@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -28,9 +29,10 @@ function Home() {
     try {
       await axios.delete(`${BASE_URL}/api/trips/${id}`);
       setTrips(trips.filter((trip) => trip._id !== id));
+      toast.success("Trip deleted!");
     } catch (err) {
       console.error("Delete error:", err);
-      alert("Failed to delete.");
+      toast.error("Failed to delete.");
     }
   };
 
@@ -52,8 +54,9 @@ function Home() {
       const res = await axios.put(`${BASE_URL}/api/trips/${editingTripId}`, editFormData);
       setTrips(trips.map(t => t._id === editingTripId ? res.data : t));
       setEditingTripId(null);
+      toast.success("Trip updated!");
     } catch (err) {
-      alert("Error editing trip");
+      toast.error("Error editing trip");
     }
   };
 

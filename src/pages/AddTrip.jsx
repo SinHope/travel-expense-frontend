@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -19,17 +21,17 @@ function AddTrip() {
 
     const { destination, date, budget } = formData;
     if (!destination || !date || !budget) {
-      alert("You cannot leave the fields empty");
+      toast.info("You cannot leave the fields empty");
       return;
     }
 
     try {
       await axios.post(`${BASE_URL}/api/trips`, formData);
-      alert("Trip added!");
+      toast.success("Trip added!");
       setFormData({ destination: "", date: "", budget: "" });
     } catch (error) {
       console.error("Error adding trip", error);
-      alert("Something went wrong.");
+      toast.error("Something went wrong.");
     }
   };
 
