@@ -12,6 +12,8 @@ function Home() {
     date: "",
     budget: ""
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const tripsPerPage = 5;
 
   useEffect(() => {
     const fetchTrips = async () => {
@@ -60,62 +62,123 @@ function Home() {
     }
   };
 
+  // Pagination logic
+  const indexOfLastTrip = currentPage * tripsPerPage;
+  const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
+  const currentTrips = trips.slice(indexOfFirstTrip, indexOfLastTrip);
+  const totalPages = Math.ceil(trips.length / tripsPerPage);
+
+
   return (
     <main className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-500 py-10 px-4">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-6">🗺️ Your Trips</h2>
         {trips.length === 0 ? (
-          <p className="text-gray-500 text-center dark:text-gray-300">No trips added yet.</p>
-        ) : (
-          <ul className="space-y-4">
-            {trips.map((trip) => (
-              <li
-                key={trip._id}
-                className="bg-white dark:bg-gray-800 transition-colors duration-500 border rounded-lg shadow p-5"
-              >
-                {editingTripId === trip._id ? (
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      name="destination"
-                      value={editFormData.destination}
-                      onChange={handleEditChange}
-                      className="w-full border p-2 rounded"
-                    />
-                    <input
-                      type="date"
-                      name="date"
-                      value={editFormData.date}
-                      onChange={handleEditChange}
-                      className="w-full border p-2 rounded"
-                    />
-                    <input
-                      type="number"
-                      name="budget"
-                      value={editFormData.budget}
-                      onChange={handleEditChange}
-                      className="w-full border p-2 rounded"
-                    />
-                    <div className="flex gap-2">
-                      <button className="bg-green-600 text-white px-4 py-1 rounded">Save</button>
-                      <button className="bg-gray-300 dark:bg-gray-200 dark:text-black px-4 py-1 rounded" onClick={() => setEditingTripId(null)}>Cancel</button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400">{trip.destination}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">📅 {trip.date}</p>
-                    <p className="text-sm text-green-600 font-medium">💰 ${trip.budget}</p>
-                    <div className="flex gap-3 mt-3">
-                      <button onClick={() => startEdit(trip)} className="text-blue-600 dark:text-blue-300 hover:underline">✏️ Edit</button>
-                      <button onClick={() => handleDelete(trip._id)} className="text-red-600 dark:text-red-300 hover:underline">🗑️ Delete</button>
-                    </div>
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+  <p className="text-gray-500 text-center dark:text-gray-300">No trips added yet.</p>
+) : (
+  <div>
+    <ul className="space-y-4">
+      {currentTrips.map((trip) => (
+        <li
+      key={trip._id}
+      className="bg-white dark:bg-gray-800 transition-colors duration-500 border rounded-lg shadow p-5"
+    >
+      {editingTripId === trip._id ? (
+        <div className="space-y-3">
+          <input
+            type="text"
+            name="destination"
+            value={editFormData.destination}
+            onChange={handleEditChange}
+            className="w-full border p-2 rounded"
+          />
+          <input
+            type="date"
+            name="date"
+            value={editFormData.date}
+            onChange={handleEditChange}
+            className="w-full border p-2 rounded"
+          />
+          <input
+            type="number"
+            name="budget"
+            value={editFormData.budget}
+            onChange={handleEditChange}
+            className="w-full border p-2 rounded"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={submitEdit}
+              className="bg-green-600 hover:bg-green-900 hover:font-medium transition duration-150 text-white px-4 py-1 rounded"
+            >
+              Save
+            </button>
+            <button
+              className="bg-gray-300 hover:bg-gray-600 hover:font-medium transition duration-150 dark:bg-gray-200 dark:text-black px-4 py-1 rounded"
+              onClick={() => setEditingTripId(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400">{trip.destination}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300">📅 {trip.date}</p>
+          <p className="text-sm text-green-600 font-medium">💰 ${trip.budget}</p>
+          <div className="flex gap-3 mt-3">
+            <button
+              onClick={() => startEdit(trip)}
+              className="bg-blue-600 text-white hover:font-medium transition duration-150 dark:text-blue-300 px-4 py-1 rounded"
+            >
+              ✏️ Edit
+            </button>
+            <button
+              onClick={() => handleDelete(trip._id)}
+              className="bg-red-600 text-white hover:font-medium transition duration-150 dark:text-red-300 px-4 py-1 rounded"
+            >
+              🗑️ Delete
+            </button>
+          </div>
+        </div>
+      )}
+    </li>
+      ))}
+    </ul>
+
+    {/* Pagination Controls */}
+    <div className="flex justify-center gap-4 mt-6">
+      <button
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        disabled={currentPage === 1}
+        className="px-4 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+      >
+        Prev
+      </button>
+
+      <button
+        onClick={() =>
+          setCurrentPage((prev) =>
+            prev < Math.ceil(trips.length / tripsPerPage) ? prev + 1 : prev
+          )
+        }
+        disabled={currentPage === Math.ceil(trips.length / tripsPerPage)}
+        className="px-4 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+
+    <p className="text-center text-sm text-gray-500 mt-2">
+      Page {currentPage} of {Math.ceil(trips.length / tripsPerPage)}
+    </p>
+  </div>
+)}
+
+
+
+
+        
       </div>
     </main>
   );
