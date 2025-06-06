@@ -13,6 +13,8 @@ function Home() {
     budget: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [budgetFilter, setBudgetFilter] = useState("");
   const tripsPerPage = 5;
 
   useEffect(() => {
@@ -65,8 +67,26 @@ function Home() {
   // Pagination logic
   const indexOfLastTrip = currentPage * tripsPerPage;
   const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
-  const currentTrips = trips.slice(indexOfFirstTrip, indexOfLastTrip);
-  const totalPages = Math.ceil(trips.length / tripsPerPage);
+  const filteredTrips = trips.filter(trip => {
+    const matchesDestination = trip.destination
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+  
+    let matchesBudget = true;
+    const budget = parseFloat(trip.budget);
+  
+    if (budgetFilter === "<500") {
+      matchesBudget = budget < 500;
+    } else if (budgetFilter === "500-1000") {
+      matchesBudget = budget >= 500 && budget <= 1000;
+    } else if (budgetFilter === ">1000") {
+      matchesBudget = budget > 1000;
+    }
+  
+    return matchesDestination && matchesBudget;
+  });
+  const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
+  const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);  
 
 
   return (
@@ -77,6 +97,35 @@ function Home() {
   <p className="text-gray-500 text-center dark:text-gray-300">No trips added yet.</p>
 ) : (
   <div>
+  <div className="mb-6">
+  <input
+    type="text"
+    placeholder="Search by destination..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="w-full border p-2 rounded dark:bg-gray-800 dark:text-white"
+  />
+  </div>
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+  <input
+    type="text"
+    placeholder="Search by destination..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="w-full sm:w-1/2 border p-2 rounded dark:bg-gray-800 dark:text-white"
+  />
+
+  <select
+    value={budgetFilter}
+    onChange={(e) => setBudgetFilter(e.target.value)}
+    className="w-full sm:w-1/3 border p-2 rounded dark:bg-gray-800 dark:text-white"
+  >
+    <option value="">All Budgets</option>
+    <option value="<500">Below $500</option>
+    <option value="500-1000">$500 – $1000</option>
+    <option value=">1000">Above $1000</option>
+  </select>
+  </div>
     <ul className="space-y-4">
       {currentTrips.map((trip) => (
         <li
@@ -104,17 +153,17 @@ function Home() {
             name="budget"
             value={editFormData.budget}
             onChange={handleEditChange}
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded cursor-pointer"
           />
           <div className="flex gap-2">
             <button
               onClick={submitEdit}
-              className="bg-green-600 hover:bg-green-900 hover:font-medium transition duration-150 text-white px-4 py-1 rounded"
+              className="cursor-pointer bg-green-600 hover:bg-green-900 hover:font-medium transition duration-150 text-white px-4 py-1 rounded"
             >
               Save
             </button>
             <button
-              className="bg-gray-300 hover:bg-gray-600 hover:font-medium transition duration-150 dark:bg-gray-200 dark:text-black px-4 py-1 rounded"
+              className="cursor-pointer bg-gray-300 hover:bg-gray-600 hover:font-medium transition duration-150 dark:bg-gray-200 dark:text-black px-4 py-1 rounded"
               onClick={() => setEditingTripId(null)}
             >
               Cancel
@@ -129,13 +178,13 @@ function Home() {
           <div className="flex gap-3 mt-3">
             <button
               onClick={() => startEdit(trip)}
-              className="bg-blue-600 text-white hover:font-medium transition duration-150 dark:text-blue-300 px-4 py-1 rounded"
+              className="cursor-pointer bg-blue-600 text-white hover:font-medium transition duration-150 dark:text-blue-300 px-4 py-1 rounded"
             >
               ✏️ Edit
             </button>
             <button
               onClick={() => handleDelete(trip._id)}
-              className="bg-red-600 text-white hover:font-medium transition duration-150 dark:text-red-300 px-4 py-1 rounded"
+              className="cursor-pointer bg-red-600 text-white hover:font-medium transition duration-150 dark:text-red-300 px-4 py-1 rounded"
             >
               🗑️ Delete
             </button>
@@ -170,7 +219,7 @@ function Home() {
     </div>
 
     <p className="text-center text-sm text-gray-500 mt-2">
-      Page {currentPage} of {Math.ceil(trips.length / tripsPerPage)}
+    Page {currentPage} of {totalPages}
     </p>
   </div>
 )}
