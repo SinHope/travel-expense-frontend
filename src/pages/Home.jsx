@@ -96,8 +96,8 @@ function Home() {
         {trips.length === 0 ? (
   <p className="text-gray-500 text-center dark:text-gray-300">No trips added yet.</p>
 ) : (
-  <div>
   <div className="mb-6">
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-4">
   <input
     type="text"
     placeholder="Search by destination..."
@@ -125,6 +125,15 @@ function Home() {
     <option value="500-1000">$500 – $1000</option>
     <option value=">1000">Above $1000</option>
   </select>
+  <button
+    onClick={() => {
+      setSearchQuery("");
+      setBudgetFilter("");
+    }}
+    className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-2 rounded dark:bg-gray-700 dark:text-white"
+  >
+    Clear Filters
+  </button>
   </div>
     <ul className="space-y-4">
       {currentTrips.map((trip) => (
